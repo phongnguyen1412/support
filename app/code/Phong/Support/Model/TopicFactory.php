@@ -24,7 +24,7 @@ class TopicFactory
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param string $instanceName
      */
-    public function __construct(\Magento\Framework\ObjectManagerInterface $objectManager, $instanceName = '\\Mageplaza\\Blog\\Model\\Post')
+    public function __construct(\Magento\Framework\ObjectManagerInterface $objectManager, $instanceName = '\\Phong\\Support\\Model\\Topic')
     {
         $this->_objectManager = $objectManager;
         $this->_instanceName = $instanceName;
