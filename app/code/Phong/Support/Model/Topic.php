@@ -2,7 +2,9 @@
 
 namespace Phong\Support\Model;
 
-class Topic extends \Magento\Framework\Model\AbstractModel implements \Magento\Framework\DataObject\IdentityInterfacea
+use Magento\Framework\Model\AbstractModel;
+
+class Topic extends AbstractModel
 {
     const CACHE_TAG = 'support_topic';
 
