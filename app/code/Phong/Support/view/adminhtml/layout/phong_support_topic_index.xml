@@ -6,7 +6,7 @@
             <block class="Phong\Support\Block\Adminhtml\Topic" name="phong_topic_grid">
                 <block class="Magento\Backend\Block\Widget\Grid" name="phong_topic_grid.grid" as="grid">
                     <arguments>
-                        <argument name="id" xsi:type="string">post_id</argument>
+                        <argument name="id" xsi:type="string">topic_id</argument>
                         <argument name="dataSource" xsi:type="object">Phong\Support\Model\ResourceModel\Topic\Collection</argument>
                         <argument name="default_sort" xsi:type="string">topic_id</argument>
                         <argument name="default_dir" xsi:type="string">ASC</argument>
