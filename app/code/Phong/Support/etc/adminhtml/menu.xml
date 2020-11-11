@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Phong_Support::topic" title="Support" module="Phong_Support" sortOrder="110" resource="Phong_Support::topic" parent="Magento_Backend::content"/>
+        <add id="Phong_Support::post" title="Manage Posts" module="Phong_Support" sortOrder="10" action="phong_support/topic" resource="Phong_Support::topic" parent="Phong_Support::topic"/>
+    </menu>
+</config>
