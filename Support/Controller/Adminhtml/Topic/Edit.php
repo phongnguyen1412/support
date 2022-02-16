@@ -8,6 +8,7 @@ use Magento\Framework\Registry;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Phong\Support\Model\TopicFactory;
+use Phong\Support\Model\ResourceModel\TopicFactory as ResourceFactory;
 
 class Edit extends Action
 {
@@ -18,7 +19,19 @@ class Edit extends Action
      */
     public $resultPageFactory;
 
-    public $topicFactory;
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    protected $topicFactory;
+
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    protected $resourceFactory;
 
     /**
      * Core registry
@@ -35,16 +48,19 @@ class Edit extends Action
      * @param Registry $registry
      * @param PageFactory $resultPageFactory
      * @param TopicFactory $topicFactory
+     * @param ResourceFactory $resourceFactory
      */
     public function __construct(
         Context $context,
         Registry $registry,
         PageFactory $resultPageFactory,
-        TopicFactory $topicFactory
+        TopicFactory $topicFactory,
+        ResourceFactory $resourceFactory
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->coreRegistry = $registry;
         $this->topicFactory = $topicFactory;
+        $this->resourceFactory = $resourceFactory;
         parent::__construct($context);
     }
 
@@ -67,7 +83,8 @@ class Edit extends Action
         $topicId = (int)$this->getRequest()->getParam('id');
         $topic = $this->topicFactory->create();
         if ($topicId) {
-            $topic->load($topicId);
+            $resource = $this->resourceFactory->create();
+            $resource->load($topic, $topicId);
             if (!$topic->getId()) {
                 $this->messageManager->addErrorMessage(__('This post no longer exists.'));
                 return false;
@@ -80,4 +97,3 @@ class Edit extends Action
         return $topic;
     }
 }
-

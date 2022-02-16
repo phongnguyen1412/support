@@ -17,7 +17,7 @@ class InstallSchema implements InstallSchemaInterface
         if (!$installer->tableExists('support_topic')) {
             $table = $installer->getConnection()->newTable($installer->getTable('support_topic'))
                 ->addColumn(
-                    'topic_id',
+                    'id',
                     Table::TYPE_INTEGER,
                     null,
                     [

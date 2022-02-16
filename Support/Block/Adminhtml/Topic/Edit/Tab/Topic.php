@@ -96,7 +96,7 @@ class Topic extends Generic implements TabInterface
             'class'  => 'fieldset-wide'
         ]);
         if ($topic->getId()) {
-            $fieldset->addField('topic_id', 'hidden', ['name' => 'topic_id']);
+            $fieldset->addField('id', 'hidden', ['name' => 'id']);
         }
 
         $fieldset->addField('name', 'text', [

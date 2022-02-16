@@ -4,7 +4,7 @@ namespace Phong\Support\Model\ResourceModel\Topic;
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
-    protected $_idFieldName = 'topic_id';
+    protected $_idFieldName = 'id';
     protected $_eventPrefix = 'support_topic_collection';
     protected $_eventObject = 'topic_collection';
 

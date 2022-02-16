@@ -11,6 +11,7 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Registry;
 use Exception;
 use Phong\Support\Model\TopicFactory;
+use Phong\Support\Model\ResourceModel\TopicFactory as ResourceFactory;
 
 class Save extends Action
 {
@@ -19,7 +20,7 @@ class Save extends Action
      *
      * @var TopicFactory
      */
-    public $topicFactory;
+    protected $topicFactory;
 
     /**
      * Core registry
@@ -28,10 +29,21 @@ class Save extends Action
      */
     public $coreRegistry;
 
-    public function __construct(Context $context, Registry $coreRegistry, TopicFactory $topicFactory)
+    protected $resourceFactory;
+
+    /**
+     * Constructor
+     *
+     * @param Context $context
+     * @param Registry $coreRegistry
+     * @param TopicFactory $topicFactory
+     * @param ResourceFactory $resourceFactory
+     */
+    public function __construct(Context $context, Registry $coreRegistry, TopicFactory $topicFactory, ResourceFactory $resourceFactory)
     {
         $this->topicFactory = $topicFactory;
         $this->coreRegistry = $coreRegistry;
+        $this->resourceFactory = $resourceFactory;
 
         parent::__construct($context);
     }
@@ -46,9 +58,9 @@ class Save extends Action
         if ($data = $this->getRequest()->getPost('topic')) {
             $topic = $this->initTopic();
             $topic->setData($data);
-
+            $resource = $this->resourceFactory->create();
             try {
-                $topic->save();
+                $resource->save($topic);
                 $this->messageManager->addSuccessMessage(__('The Topic has been saved.'));
                 $this->_getSession()->setData('phong_support_topic_data', false);
                 if ($this->getRequest()->getParam('back')) {
@@ -75,7 +87,8 @@ class Save extends Action
         $topicId = (int)$this->getRequest()->getParam('id');
         $topic = $this->topicFactory->create();
         if ($topicId) {
-            $topic->load($topicId);
+            $resource = $this->resourceFactory->create();
+            $resource->load($topic, $topicId);
             if (!$topic->getId()) {
                 $this->messageManager->addErrorMessage(__('This post no longer exists.'));
                 return false;

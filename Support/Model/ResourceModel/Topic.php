@@ -11,6 +11,6 @@ class Topic extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
     protected function _construct()
     {
-        $this->_init('support_topic', 'topic_id');
+        $this->_init('support_topic', 'id');
     }
 }

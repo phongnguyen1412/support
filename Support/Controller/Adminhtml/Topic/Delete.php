@@ -11,6 +11,7 @@ use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Registry;
 use Phong\Support\Model\TopicFactory;
+use Phong\Support\Model\ResourceModel\TopicFactory as ResourceFactory;
 
 class Delete extends Action
 {
@@ -19,7 +20,14 @@ class Delete extends Action
      *
      * @var TopicFactory
      */
-    public $topicFactory;
+    protected $topicFactory;
+
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    protected $resourceFactory;
 
     /**
      * Core registry
@@ -28,9 +36,18 @@ class Delete extends Action
      */
     public $coreRegistry;
 
-    public function __construct(Context $context, Registry $coreRegistry, TopicFactory $topicFactory)
+    /**
+     * Constructor
+     *
+     * @param Context $context
+     * @param Registry $coreRegistry
+     * @param TopicFactory $topicFactory
+     * @param ResourceFactory $resourceFactory
+     */
+    public function __construct(Context $context, Registry $coreRegistry, TopicFactory $topicFactory, ResourceFactory $resourceFactory)
     {
         $this->topicFactory = $topicFactory;
+        $this->resourceFactory = $resourceFactory;
         $this->coreRegistry = $coreRegistry;
 
         parent::__construct($context);
@@ -45,7 +62,10 @@ class Delete extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($id = $this->getRequest()->getParam('id')) {
             try {
-                $this->topicFactory->create()->load($id)->delete();
+                $resource = $this->resourceFactory->create();
+                $topic = $this->topicFactory->create();
+                $resource->load($topic, $id);
+                $resource->delete($topic);
                 $this->messageManager->addSuccessMessage(__('The Topic has been deleted.'));
             } catch (Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
