@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="support_topic" resource="default" engine="innodb" comment="Topic Table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="Topic ID"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" identity="false" comment="Status"/>
+        <column xsi:type="varchar" name="url_key" nullable="false" length="255" comment="Url key"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Name"/>
+        <column xsi:type="text" name="topic_content" nullable="false" comment="Content"/>
+        <column xsi:type="int" name="sort_order" nullable="false" default="0" comment="Order"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="TOPIC_INDEX_NAME" indexType="btree">
+            <column name="name"/>
+        </index>
+         <constraint xsi:type="unique" referenceId="TOPIC_UNIQUE_URL_KEY">
+            <column name="url_key"/>
+        </constraint>
+    </table>
+</schema>
