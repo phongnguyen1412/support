@@ -1,0 +1,10 @@
+<?php $topic = $block->getTopic(); ?>
+<div class="privacy-policy cms-content">
+    <h1>
+        <?php echo $block->escapeHtml($topic->getName()); ?>
+    </h1>
+    <div class="content">
+        <?= /* @noEscape */ $topic->getContent(); ?>
+    </div>
+</div>
+

@@ -9,13 +9,41 @@ $id = $block->getRequest()->getParam('id');
 $topicList = $block->getList([$id]);; ?>
 
 <?php if ($topicList->getSize()) : ?>
-    <ul>
-        <?php foreach ($topicList as $list) : ?>
-            <li>
-                <a href="<?php echo $list->getUrl(); ?>">
-                    <?php echo $list->getName(); ?>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <div class="block-filter">
+        <div class="block-content filter-content">
+            <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle">
+                <?= $block->escapeHtml(__('Support')) ?>
+            </strong>
+            <div class="filter-options" id="narrow-by-list" data-role="content" data-mage-init='
+                        {
+                            "accordion":
+                            {
+                                "openedState": "active",
+                                "collapsible": true,
+                                "active": false,
+                                "multipleCollapsible": false
+                            }
+                        }'>
+                <div data-role="collapsible" class="filter-options-item">
+                    <div data-role="title" class="filter-options-title">
+                        <?php echo $block->escapeHtml(__('Topic List')); ?>
+                    </div>
+
+                    <div data-role="content" class="filter-options-content">
+                        <ol class="items">
+                            <?php foreach ($topicList as $list) : ?>
+                                <li class="item">
+                                    <a href="<?php echo $list->getUrl(); ?>">
+                                        <?php echo $list->getName(); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 <?php endif; ?>

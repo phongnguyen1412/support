@@ -119,7 +119,7 @@ class Topic extends Generic implements TabInterface
             'name'   => 'topic_content',
             'label'  => __('Description'),
             'title'  => __('Description'),
-            'config' => $this->wysiwygConfig->getConfig(['add_variables' => false, 'add_widgets' => false])
+            'config' => $this->wysiwygConfig->getConfig(['add_variables' => false, 'add_widgets' => true])
         ]);
 
         $fieldset->addField('url_key', 'text', [

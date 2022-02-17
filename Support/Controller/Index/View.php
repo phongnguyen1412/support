@@ -10,6 +10,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Registry;
 
 class View extends Action
 {
@@ -56,22 +57,31 @@ class View extends Action
     protected $resultForwardFactory;
 
     /**
-     * Undocumented function
+     * Undocumented variable
      *
-     * @param Context $context
-     * @param TopicFactory $topicFactory
-     * @param ResourceFactory $resourceFactory
-     * @param PageFactory $pageFactory
-     * @param StoreInterface $storeManager
-     * @param ForwardFactory $resultForwardFactory
+     * @var [type]
      */
+    protected $coreRegistry;
+
+   /**
+    * Undocumented function
+    *
+    * @param Context $context
+    * @param TopicFactory $topicFactory
+    * @param ResourceFactory $resourceFactory
+    * @param PageFactory $pageFactory
+    * @param StoreInterface $storeManager
+    * @param ForwardFactory $resultForwardFactory
+    * @param Registry $coreRegistry
+    */
     public function __construct(
         Context $context,
         TopicFactory $topicFactory,
         ResourceFactory $resourceFactory,
         PageFactory $pageFactory,
         StoreInterface $storeManager,
-        ForwardFactory $resultForwardFactory
+        ForwardFactory $resultForwardFactory,
+        Registry  $coreRegistry
     ) {
         parent::__construct($context);
         $this->topicFactory = $topicFactory;
@@ -79,22 +89,27 @@ class View extends Action
         $this->pageFactory = $pageFactory;
         $this->storeManager = $storeManager;
         $this->resultForwardFactory = $resultForwardFactory;
+        $this->coreRegistry = $coreRegistry;
     }
 
     public function execute()
     {
-        if ($id = $this->getRequest()->getParam('id')) {
-            $topic = $this->topicFactory->create();
-            $resource = $this->resourceFactory->create();
-            $resource->load($topic, $id);
-            if ($topic->getId()) {
-                $result = $this->pageFactory->create();
-            } else {
-                $result = $this->resultForwardFactory->create()->forward('noroute');
-            }
+        $topic = $this->initTopic();
+        if ($topic->getId()) {
+            $result = $this->pageFactory->create();
         } else {
             $result = $this->resultForwardFactory->create()->forward('noroute');
         }
         return $result;
+    }
+
+    protected function initTopic()
+    {
+        $id = $this->getRequest()->getParam('id');
+        $topic = $this->topicFactory->create();
+        $resource = $this->resourceFactory->create();
+        $resource->load($topic, $id);
+        $this->coreRegistry->register('current_topic', $topic);
+        return $topic;
     }
 }

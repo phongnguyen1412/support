@@ -13,6 +13,7 @@ use Magento\UrlRewrite\Model\ResourceModel\UrlRewriteFactory as RewriteResourceF
 use Magento\UrlRewrite\Model\ResourceModel\UrlRewriteCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\UrlRewrite\Model\ResourceModel\UrlRewriteCollection;
+use Magento\Cms\Model\Template\FilterProvider;
 
 /**
  * Undocumented class
@@ -63,7 +64,14 @@ class Topic extends AbstractModel
      */
     protected $storeManager;
 
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
     protected $urlRewriteCollection;
+
+    protected $widgetFilter;
 
     /**
      * Undocumented function
@@ -99,6 +107,7 @@ class Topic extends AbstractModel
         RewriteResourceFactory $rewriteResource,
         UrlRewriteCollectionFactory $urlRewriteCollection,
         StoreManagerInterface $storeManager,
+        FilterProvider $widgetFilter,
         array $data = []
     ) {
         parent::__construct(
@@ -113,6 +122,7 @@ class Topic extends AbstractModel
         $this->storeManager = $storeManager;
         $this->rewriteResource = $rewriteResource;
         $this->urlRewriteCollection = $urlRewriteCollection;
+        $this->widgetFilter = $widgetFilter;
     }
 
     /**
@@ -150,7 +160,7 @@ class Topic extends AbstractModel
     {
         $storeId = $this->storeManager->getStore()->getId();
         $urlRewrite = $this->getUrlRewrite($storeId);
-        return !empty($urlRewrite->getId()) ? $urlRewrite->request_path() :  $this->url->getDirectUrl('support/index/view/id/' . $this->getId());
+        return !empty($urlRewrite->getId()) ? $urlRewrite->getRequestPath() :  $this->url->getDirectUrl('support/index/view/id/' . $this->getId());
     }
 
     /**
@@ -182,6 +192,7 @@ class Topic extends AbstractModel
                 if (!empty($urlRewrite)) {
                     $urlRewrite->setRequestPath('support/' . $this->getUrlKey());
                 } else {
+                    $urlRewrite = $this->urlRewrite->create();
                     $urlRewrite->setData([
                         'store_id' => $store->getId(),
                         'is_system' => 0,
@@ -200,5 +211,15 @@ class Topic extends AbstractModel
             }
         }
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getContent()
+    {
+        return $this->widgetFilter->getBlockFilter()->filter($this->getTopicContent());
     }
 }
