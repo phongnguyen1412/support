@@ -12,7 +12,7 @@
         <referenceBlock name="page.main.title">
         </referenceBlock>
         <referenceContainer name="content">
-            <block class="Phong\Support\Block\Topic\View" name="topic.view" template="Phong_Support::topic/view.phtml" cacheable="false">
+            <block class="Phong\Support\Block\Topic\View" name="topic.view" template="Phong_Support::topic/view.phtml">
             </block>
         </referenceContainer>
         <referenceContainer name="sidebar.additional">
