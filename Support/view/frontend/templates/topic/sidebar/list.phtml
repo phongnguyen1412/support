@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @var $block \Phong\Support\Block\Topic\Siderbar\Topic
+ */; ?>
+
+<?php
+$id = $block->getRequest()->getParam('id');
+$topicList = $block->getList([$id]);; ?>
+
+<?php if ($topicList->getSize()) : ?>
+    <ul>
+        <?php foreach ($topicList as $list) : ?>
+            <li>
+                <a href="<?php echo $list->getUrl(); ?>">
+                    <?php echo $list->getName(); ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
